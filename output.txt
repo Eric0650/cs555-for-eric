@@ -1,0 +1,125 @@
+*************************************************LINES****************************************************
+0 HEAD
+Level: 0
+TAG: HEAD
+
+1 SOUR Family Echo
+Level: 1
+TAG: INVALID
+
+2 WWW http://www.familyecho.com/
+Level: 2
+TAG: INVALID
+
+1 FILE Family 2
+Level: 1
+TAG: INVALID
+
+1 DATE 2 MAR 2018
+Level: 1
+TAG: DATE
+
+1 DEST ANSTFILE
+Level: 1
+TAG: INVALID
+
+1 GEDC
+Level: 1
+TAG: INVALID
+
+2 VERS 5.5.1
+Level: 2
+TAG: INVALID
+
+2 FORM LINEAGE-LINKED
+Level: 2
+TAG: INVALID
+
+1 SUBM @I1@
+Level: 1
+TAG: INVALID
+
+2 NAME Eirc
+Level: 2
+TAG: NAME
+
+1 SUBN
+Level: 1
+TAG: INVALID
+
+1 CHAR UTF-8
+Level: 1
+TAG: INVALID
+
+0 @I1@ INDI
+Level: 0
+TAG: INDI
+
+0 @I2@ INDI
+Level: 0
+TAG: INDI
+
+0 @I3@ INDI
+Level: 0
+TAG: INDI
+
+0 @I4@ INDI
+Level: 0
+TAG: INDI
+
+0 @I5@ INDI
+Level: 0
+TAG: INDI
+
+0 @I6@ INDI
+Level: 0
+TAG: INDI
+
+0 @I7@ INDI
+Level: 0
+TAG: INDI
+
+0 @I8@ INDI
+Level: 0
+TAG: INDI
+
+0 @F1@ FAM
+Level: 0
+TAG: FAM
+
+0 @F2@ FAM
+Level: 0
+TAG: FAM
+
+0 @F3@ FAM
+Level: 0
+TAG: FAM
+
+0 @F4@ FAM
+Level: 0
+TAG: FAM
+
+0 TRLR
+Level: 0
+TAG: TRLR
+
+**********************************************************************************************************
+
+*********************************************INDIVIDUALS**************************************************
+@I1@ -  Name: Ziang Gao, Sex: M, DOB: 06/4/1993, DOD: null, Spouse of: @F1@, Child of: @F2@
+@I2@ -  Name: Shuz Gao, Sex: M, DOB: 05/6/1978, DOD: null, Spouse of: @F3@, Child of: @F4@
+@I3@ -  Name: Qiumei Yang, Sex: F, DOB: 05/4/1974, DOD: null, Spouse of: @F2@, Child of: null
+@I4@ -  Name: Fazo Pi, Sex: F, DOB: 05/8/1985, DOD: null, Spouse of: @F3@, Child of: null
+@I5@ -  Name: Lili Gao, Sex: M, DOB: 03/5/1955, DOD: null, Spouse of: @F4@, Child of: null
+@I6@ -  Name: Xiqi Li, Sex: F, DOB: 04/5/1955, DOD: null, Spouse of: @F4@, Child of: null
+@I7@ -  Name: Mizi Gao, Sex: F, DOB: 05/8/1996, DOD: null, Spouse of: null, Child of: @F2@
+@I8@ -  Name: Sizi Fi, Sex: F, DOB: 06/5/1994, DOD: null, Spouse of: @F1@, Child of: null
+**********************************************************************************************************
+
+*********************************************FAMILIES*****************************************************
+@F1@ - Husband: @I1@, Wife: @I8@, Children: null, Marriage Date: null, Divorce Date: null
+@F2@ - Husband: @I2@, Wife: @I3@, Children: [@I1@, @I7@], Marriage Date: null, Divorce Date: null
+@F3@ - Husband: @I2@, Wife: @I4@, Children: null, Marriage Date: null, Divorce Date: null
+@F4@ - Husband: @I5@, Wife: @I6@, Children: [@I2@], Marriage Date: null, Divorce Date: null
+**********************************************************************************************************
+
