@@ -1,0 +1,42 @@
+	static void marriageAfterFourteen(HashMap<String, Individual> individuals, HashMap<String, Family> families)
+			throws FileNotFoundException, IOException {
+		
+		Map<String, Individual> indMap = new HashMap<String, Individual>(individuals);
+		Map<String, Family> famMap = new HashMap<String, Family>(families);
+		Date marriageDate = null;
+		Date ageFourteenOfHusb = null;
+		Date ageFourteenOfWife = null;
+		
+		Iterator<Map.Entry<String, Family>> famEntries = famMap.entrySet().iterator();
+		while (famEntries.hasNext()) {
+			Map.Entry<String, Family> famEntry = famEntries.next();
+			Family fam = famEntry.getValue();
+			if (fam.getMarriage() != null) {
+				try {
+					marriageDate = sdf.parse(fam.getMarriage());
+					Individual husb = indMap.get(fam.getHusb());
+					Individual wife = indMap.get(fam.getWife());
+					Calendar c = Calendar.getInstance();
+					c.setTime(sdf.parse(husb.getBirth()));
+					c.add(Calendar.YEAR, 14);
+					ageFourteenOfHusb = c.getTime();
+					c.setTime(sdf.parse(wife.getBirth()));
+					c.add(Calendar.YEAR, 14);
+					ageFourteenOfWife = c.getTime();
+					if (marriageDate.before(ageFourteenOfWife) || marriageDate.before(ageFourteenOfHusb)) {
+						writeToFile(
+								"***************************ERROR: User Story US10: Marriage after fourteen********************************\n"
+										+ "Family ID: " + fam.getId()
+										+ "  has a marriage before one or both spouses turn 14 "
+										+ "\n**********************************************************************************************************\n");
+
+					}
+
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
