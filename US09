@@ -1,0 +1,54 @@
+static void birthBeforeDeathofParents(HashMap<String, Individual> individuals, HashMap<String, Family> families)
+			throws FileNotFoundException, IOException {
+		
+		Map<String, Individual> indMap = new HashMap<String, Individual>(individuals);
+		Map<String, Family> indFam = new HashMap<String, Family>(families);
+
+		Iterator<Map.Entry<String, Individual>> indEntries = indMap.entrySet().iterator();
+		Date birthDate = null;
+		Date deathofMom = null;
+		Date deathofDad = null; // In this case, it is nine month after father's
+								// death;
+		while (indEntries.hasNext()) {
+			Map.Entry<String, Individual> indEntry = indEntries.next();
+			Individual ind = indEntry.getValue();
+			if (ind.getChildOf() == null)
+				continue;
+			Family fam = indFam.get(ind.getChildOf());
+			Individual dad = indMap.get(fam.getHusb());
+			Individual mom = indMap.get(fam.getWife());
+			try {
+				birthDate = sdf.parse(ind.getBirth());
+				if (mom.getDeath() != null) {
+					deathofMom = sdf.parse(mom.getDeath());
+					if (birthDate.after(deathofMom)) {
+						writeToFile(
+								"***************************ERROR: User Story US09: Birth Before Death of Parents****************************\n"
+										+ "Individual ID: " + ind.getId() + ": " + ind.getName()
+										+ "  was born after the death of mother "
+										+ "\n************************************************************************************************************\n");
+					}
+				}
+				if (dad.getDeath() != null) {
+					// deathofDad = sdf.parse(dad.getDeath());
+					Calendar c = Calendar.getInstance();
+					c.setTime(sdf.parse(dad.getDeath()));
+					c.add(Calendar.MONTH, 9);
+					deathofDad = c.getTime();
+					if (birthDate.after(deathofDad)) {
+						writeToFile(
+								"***************************ERROR: User Story US09: Birth Before Death of Parents**************************\n"
+										+ "Individual ID: " + ind.getId() + ": " + ind.getName()
+										+ "  was born after the death of father "
+										+ "\n**********************************************************************************************************\n");
+					}
+
+				}
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	}
