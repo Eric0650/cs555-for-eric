@@ -1,0 +1,30 @@
+static void uniqueID(HashMap<String, Individual> individuals, HashMap<String, Family> families)
+			throws FileNotFoundException, IOException {
+		Map<String, Individual> indMap = new HashMap<String, Individual>(individuals);
+		Map<String, Family> famMap = new HashMap<String, Family>(families);
+		if (!dupInd.isEmpty()) {
+			for (int i = 0; i < dupInd.size(); i++) {
+				Individual ind1 = dupInd.get(i);
+				Individual ind2 = indMap.get(dupInd.get(i).getId());
+				writeToFile(
+						"***************************ERROR: User Story US01: Unique ID***************************************\nIndividual: "
+								+ ind1.getId() + " - " + ind1.getName() + " has the same ID as " + ind2.getId() + " - "
+								+ ind2.getName()
+								+ "\n**********************************************************************************************************\n");
+
+			}
+
+		}
+		if (!dupInd.isEmpty()) {
+			for (int i = 0; i < dupFam.size(); i++) {
+				Family fam1 = dupFam.get(i);
+				Family fam2 = famMap.get(dupFam.get(i).getId());
+				writeToFile(
+						"***************************ERROR: User Story US01: Unique ID***************************************\nIndividual: "
+								+ fam1.getId() + " has the same ID as " + fam2.getId()
+								+ "\n**********************************************************************************************************\n");
+
+			}
+		}
+
+	}
