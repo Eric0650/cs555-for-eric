@@ -1,0 +1,64 @@
+static void siblingSpacing(HashMap<String, Family> families)
+			throws ParseException, FileNotFoundException, IOException {
+		
+		Map<String, Family> famMap = new HashMap<String, Family>(families);
+		Iterator<Map.Entry<String, Family>> famEntries = famMap.entrySet().iterator();
+		Date sib1;
+		Date sib2;
+		Calendar calendar1 = Calendar.getInstance();
+		Calendar calendar2 = Calendar.getInstance();
+		while (famEntries.hasNext()) {
+			HashMap<String, String> childMap = new HashMap<String, String>();
+			Map.Entry<String, Family> famEntry = famEntries.next();
+			Family fam = famEntry.getValue();
+			if (fam.getChild() != null && fam.getChild().size() > 1) {
+				ArrayList<String> children = fam.getChild();
+				for (int i = 0; i < children.size(); i++) {
+					Individual ind = individuals.get(children.get(i));
+					childMap.put(ind.getId(), ind.getBirth());
+				}
+				Iterator it = childMap.entrySet().iterator();
+				while (it.hasNext()) {
+					Map.Entry pair = (Map.Entry) it.next();
+					sib1 = sdf.parse(pair.getValue().toString());
+					calendar1.setTime(sib1);
+					Iterator it2 = childMap.entrySet().iterator();
+					while (it2.hasNext()) {
+						Map.Entry pair2 = (Map.Entry) it2.next();
+						sib2 = sdf.parse(pair2.getValue().toString());
+						calendar2.setTime(sib2);
+						if ((calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR))
+								&& pair.getKey() != pair2.getKey()) {
+							int diffMonth = Math.abs(calendar2.get(Calendar.MONTH) - calendar1.get(Calendar.MONTH));
+							int diffDay = Math
+									.abs(calendar2.get(Calendar.DAY_OF_MONTH) - calendar1.get(Calendar.DAY_OF_MONTH));
+							if ((diffMonth < 8)) {
+								Individual ind1 = individuals.get(pair.getKey());
+								Individual ind2 = individuals.get(pair2.getKey());
+								if (diffMonth == 0 && diffDay > 2) {
+									writeToFile(
+											"***************************ERROR: User Story US11: Sibling Spacing****************************************\nFamily ID: "
+													+ fam.getId()
+													+ "  has Children Born in the Same Month and Year and are More than 2 Days Apart\nIndividual 1: "
+													+ ind1.getId() + " - " + ind1.getName() + " DOB: " + ind1.getBirth()
+													+ "\nIndividual 2: " + ind2.getId() + " - " + ind2.getName()
+													+ " DOB: " + ind2.getBirth()
+													+ "\n**********************************************************************************************************\n");
+								} else {
+									writeToFile(
+											"***************************ERROR: User Story US11: Sibling Spacing****************************************\nFamily ID: "
+													+ fam.getId()
+													+ "  has Children Born Less than Eight Months Apart\nIndividual 1: "
+													+ ind1.getId() + " - " + ind1.getName() + " DOB: " + ind1.getBirth()
+													+ "\nIndividual 2: " + ind2.getId() + " - " + ind2.getName()
+													+ " DOB: " + ind2.getBirth()
+													+ "\n**********************************************************************************************************\n");
+								}
+							}
+						}
+					}
+				}
+				childMap = null;
+			}
+		}
+	}
