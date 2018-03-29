@@ -1,0 +1,38 @@
+static void lessThan150(HashMap<String, Individual> individuals) throws FileNotFoundException, IOException {
+		
+		Map<String, Individual> map = new HashMap<String, Individual>(individuals);
+		Iterator<Map.Entry<String, Individual>> entries = map.entrySet().iterator();
+		while (entries.hasNext()) {
+			Map.Entry<String, Individual> entry = entries.next();
+			Individual indi = entry.getValue();
+			// Get the date of birth
+			int date_of_birth = Integer.parseInt(indi.getBirth().split("/")[2]);
+			/*
+			 * Check if the person is alive. If so, compare the birth date and
+			 * date of today; If not, compare the birth date with death date.
+			 */
+			if (indi.getDeath() == null) {
+				// use calendar to get the date of today
+				Calendar ca = Calendar.getInstance();
+				int year = ca.get(Calendar.YEAR);
+				int diff = year - date_of_birth;
+				if (diff > 150) {
+					writeToFile(
+							"***************************ERROR: User Story US07: Less Than 150 Years old********************************\nIndividual: "
+									+ indi.getId() + " - " + indi.getName() + " is greater than 150 years old.\nDOB: "
+									+ indi.getBirth()
+									+ "\n**********************************************************************************************************\n");
+				}
+			} else {
+				int date_of_death = Integer.parseInt(indi.getDeath().split("/")[2]);
+				int diff = date_of_death - date_of_birth;
+				if (diff > 150)
+					writeToFile(
+							"***************************ERROR: User Story US07: Less Than 150 Years old********************************\nIndividual: "
+									+ indi.getId() + " - " + indi.getName()
+									+ " The difference between their birthdate and the death is greater than 150 years.\n DOB: "
+									+ indi.getBirth() + " DOD: " + indi.getDeath()
+									+ "\n**********************************************************************************************************\n");
+			}
+		}
+	}
