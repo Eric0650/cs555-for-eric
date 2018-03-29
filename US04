@@ -1,0 +1,37 @@
+static void Marriagebeforedivorce(HashMap<String, Individual> individuals, HashMap<String, Family> families)
+			throws FileNotFoundException, IOException {
+		
+		Date marriageDate = null;
+		Date divorceDate = null;
+		Map<String, Family> famMap = new HashMap<String, Family>(families);
+		Map<String, Individual> indMap = new HashMap<String, Individual>(individuals);
+		Iterator<Map.Entry<String, Family>> famEntries = famMap.entrySet().iterator();
+		while (famEntries.hasNext()) {
+			Map.Entry<String, Family> famEntry = famEntries.next();
+			Family fam = famEntry.getValue();
+			try {
+				// check if the divorce exists, if not, there is no need to
+				// check if marriage before the divorce.
+				if (fam.getDivorce() != null) {
+					divorceDate = sdf.parse(fam.getDivorce());
+					if (fam.getMarriage() == null)
+						System.out.println("Missing marriage date");
+					marriageDate = sdf.parse(fam.getMarriage());
+					if (divorceDate.before(marriageDate)) {
+						writeToFile(
+								"***************************ERROR: User Story US04: Marriage Before Divorce********************************\nFamily: "
+										+ fam.getId() + "\nIndividual: " + fam.getHusb() + ": "
+										+ indMap.get(fam.getHusb()).getName() + fam.getWife() + ": "
+										+ indMap.get(fam.getWife()).getName()
+										+ " marriage date before divorce date\nMarriage Date: " + fam.getMarriage()
+										+ " Divorce Date: " + fam.getDivorce()
+										+ "\n**********************************************************************************************************\n");
+					}
+				}
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
