@@ -1,0 +1,54 @@
+static void parentsNotTooOld(HashMap<String, Individual> individuals, HashMap<String, Family> families)
+			throws ParseException, FileNotFoundException, IOException {
+		
+		Map<String, Individual> indMap = new HashMap<String, Individual>(individuals);
+		Map<String, Family> indFam = new HashMap<String, Family>(families);
+
+		Iterator<Map.Entry<String, Individual>> indEntries = indMap.entrySet().iterator();
+		SimpleDateFormat ydf = new SimpleDateFormat("yyyy");
+
+		Date birthDate = null;
+		Date birthOfMom = null;
+		Date birthOfDad = null;
+		String strDate = "";
+		String strMom = "";
+		String strDad = "";
+
+		while (indEntries.hasNext()) {
+			Map.Entry<String, Individual> indEntry = indEntries.next();
+			Individual ind = indEntry.getValue();
+			if (ind.getChildOf() == null)
+				continue;
+			Family fam = indFam.get(ind.getChildOf());
+			Individual dad = indMap.get(fam.getHusb());
+			Individual mom = indMap.get(fam.getWife());
+			try {
+				birthDate = sdf.parse(ind.getBirth());
+				strDate = ydf.format(birthDate);
+				if (mom.getBirth() != null) {
+					birthOfMom = sdf.parse(mom.getBirth());
+					strMom = ydf.format(birthOfMom);
+					if ((Integer.parseInt(strDate) - Integer.parseInt(strMom)) >= 60) {
+						writeToFile(
+								"***************************ERROR: User Story US12: Parents not too old****************************\nFamily ID: "
+										+ fam.getId() + "\n" + "Mother is more than 60 years older than her child"
+										+ "\n**********************************************************************************************************\n");
+					}
+				}
+				if (dad.getBirth() != null) {
+					birthOfDad = sdf.parse(dad.getBirth());
+					strDad = ydf.format(birthOfDad);
+					if ((Integer.parseInt(strDate) - Integer.parseInt(strDad)) >= 80) {
+						writeToFile(
+								"***************************ERROR: User Story US12: Parents not too old****************************\nFamily ID: "
+										+ fam.getId() + "\n" + "Father is more than 80 years older than her child"
+										+ "\n**********************************************************************************************************\n");
+					}
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
