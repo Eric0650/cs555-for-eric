@@ -1,0 +1,58 @@
+static void auntsAndUncles(HashMap<String, Family> families)
+			throws ParseException, FileNotFoundException, IOException {
+		
+		Map<String, Family> famMap = new HashMap<String, Family>(families);
+		Iterator<Map.Entry<String, Family>> famEntries = famMap.entrySet().iterator();
+		String fatherID = null;
+		String motherID = null;
+		String motherFamilyID = null;
+		String fatherFamilyID = null;
+		ArrayList<String> auntsUncles = new ArrayList<String>();
+		while (famEntries.hasNext()) {
+			Map.Entry<String, Family> famEntry = famEntries.next();
+			Family fam = famEntry.getValue();
+			fatherID = fam.getHusb();
+			motherID = fam.getWife();
+			Individual father = individuals.get(fatherID);
+			Individual mother = individuals.get(motherID);
+			motherFamilyID = mother.getChildOf();
+			fatherFamilyID = father.getChildOf();
+			if (motherFamilyID != null) {
+				Family motherFamily = families.get(motherFamilyID);
+				if (motherFamily.getChild() != null && motherFamily.getChild().size() > 1) {
+					auntsUncles.addAll(motherFamily.getChild());
+				}
+			}
+			if (fatherFamilyID != null) {
+				Family fatherFamily = families.get(fatherFamilyID);
+				if (fatherFamily.getChild() != null && fatherFamily.getChild().size() > 1) {
+					auntsUncles.addAll(fatherFamily.getChild());
+				}
+			}
+			if (fam.getChild() != null) {
+				ArrayList<String> children = fam.getChild();
+				for (int i = 0; i < children.size(); i++) {
+					Individual ind = individuals.get(children.get(i));
+					String spouseOf = ind.getSpouseOf();
+					if (spouseOf != null) {
+						Family childFam = families.get(spouseOf);
+						String spouse = childFam.getHusb();
+						if (spouse.equals(ind.getId())) {
+							spouse = childFam.getWife();
+						}
+						if (auntsUncles.contains(spouse)) {
+							Individual incest = individuals.get(spouse);
+							writeToFile(
+									"***************************ERROR: User Story US14: Aunts and Uncles***************************************\nIndividual: "
+											+ ind.getId() + " - " + ind.getName()
+											+ " is married to either their aunt or uncle " + incest.getId() + " - "
+											+ incest.getName()
+											+ "\n**********************************************************************************************************\n");
+						}
+					}
+				}
+
+			}
+		}
+
+	}
